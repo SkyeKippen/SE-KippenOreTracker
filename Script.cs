@@ -22,9 +22,9 @@ namespace IngameScript
 {
     public partial class Program : MyGridProgram
     {
-        // START UESRSPACE
+        // START USER VARIABLES
         const string OUTPUT_LCD_KEYWORD = "[MWI-Ore]";
-        // END USERSPACE
+        // END USER VARIABLES
 
         private Queue<double> runtimeHistory = new Queue<double>();
         private double runtimeSum = 0;
@@ -187,11 +187,10 @@ namespace IngameScript
                 foreach (var ore in prevOre)
                 {
                     MyFixedPoint current = currentOre.ContainsKey(ore.Key) ? currentOre[ore.Key] : 0;
-                    MyFixedPoint rawDelta = ore.Value - current; // Total ore that disappeared
+                    MyFixedPoint rawDelta = ore.Value - current;
 
-                    if (rawDelta <= 0) continue; // Ore increased or stayed same, nothing to analyze
+                    if (rawDelta <= 0) continue;
 
-                    // How much did the QUEUE shrink for this ore type?
                     MyFixedPoint prevQ    = prevQueueAmounts.ContainsKey(ore.Key) ? prevQueueAmounts[ore.Key] : 0;
                     MyFixedPoint currentQ = currentQueue.ContainsKey(ore.Key) ? currentQueue[ore.Key] : 0;
                     MyFixedPoint queueDelta = prevQ - currentQ;
@@ -202,7 +201,6 @@ namespace IngameScript
                         MyFixedPoint refined;
                         if (oreWasEmptied && queueWasCleared)
                         {
-                            // Queue cleared because ore was pulled out — nothing was refined
                             refined = 0;
                         }
                         else
@@ -210,7 +208,6 @@ namespace IngameScript
                             refined = MyFixedPoint.Min(queueDelta > 0 ? queueDelta : 0, rawDelta);
                         }
 
-                    // Removed = whatever disappeared that wasn't accounted for by refining
                     MyFixedPoint removed = rawDelta - refined;
 
                     if (refined > 0)
@@ -225,11 +222,9 @@ namespace IngameScript
                     if (removed > 0)
                     {
                         Echo($"  {ore.Key} removed:  -{(double)removed:N0}");
-                        // You could track totalOreRemoved here too if you want
                     }
                 }
 
-                // Ingot delta logic unchanged — ingots only appear via refining
                 Echo("=== Ingots Produced This Tick ===");
                 foreach (var ingot in currentIngots)
                 {
