@@ -27,7 +27,7 @@ namespace IngameScript
 {
     public partial class Program : MyGridProgram
     {
-        string version = "v0.2.1";
+        string version = "v0.2.2";
         string LCD_KEYWORD = "[KOT]";
 
         float refinery_speed = 1.30f;
@@ -83,6 +83,7 @@ namespace IngameScript
             { "Gold", 0.01f },
             { "Platinum", 0.005f },
             { "Uranium", 0.01f },
+            { "Stone", 0.014f }
         };
 
         class CachedOre
